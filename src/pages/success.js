@@ -1,8 +1,8 @@
 import React from "react";
 import Confetti from "react-confetti";
-import useWindowSize from "../../hooks/useWindowSize";
 import { Box, Button, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import useWindowSize from "@/hooks/useWindowSize";
 
 function Success() {
   const windowSize = useWindowSize();
