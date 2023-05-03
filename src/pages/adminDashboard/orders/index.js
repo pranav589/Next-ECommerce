@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import CustomTabs from "../../../../components/CustomTabs/CustomTabs";
-import Wrapper from "../../../../components/Wrapper/Wrapper";
 import { Box, Button } from "@mui/material";
 import { apiCall } from "@/utils/apiCall";
-import TableComponent from "../../../../components/TableComponent/TableComponent";
-import BoxShadowWrapper from "../../../../components/BoxShadowWrapper";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import PaginationComponent from "../../../../components/PaginationComponent/PaginationComponent";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import CustomTabs from "@/components/CustomTabs/CustomTabs";
+import BoxShadowWrapper from "@/components/BoxShadowWrapper";
+import TableComponent from "@/components/TableComponent/TableComponent";
+import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
 
 function Orders() {
   const router = useRouter();

@@ -1,7 +1,7 @@
 import React from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import PaymentComp from "../../components/PaymentComp";
+import PaymentComp from "@/components/PaymentComp";
 
 const publishKey = process.env.STRIPE_PUBLISHABLE_KEY;
 

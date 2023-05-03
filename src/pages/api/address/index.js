@@ -1,6 +1,6 @@
 import connectDB from "@/utils/connectDB";
 import Address from "../../../models/addressModel";
-import auth from "../../../../middleware/auth";
+import auth from "@/middleware/auth";
 
 connectDB();
 

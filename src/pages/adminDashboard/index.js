@@ -1,16 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DataContext } from "../../../store/GlobalState";
 import { useRouter } from "next/router";
 import { Box, CircularProgress, Grid, Paper, Typography } from "@mui/material";
-import Wrapper from "../../../components/Wrapper/Wrapper";
-import CustomTabs from "../../../components/CustomTabs/CustomTabs";
-import BoxShadowWrapper from "../../../components/BoxShadowWrapper";
 import { toast } from "react-toastify";
 import { apiCall } from "@/utils/apiCall";
-import useWindowSize from "../../../hooks/useWindowSize";
-// import LineChart from "../../../components/LineChart/LineChart";
-import LineChartComponent from "../../../components/LineChart/LineChart";
-// import SwipeableViews from "react-swipeable-views";
+import { DataContext } from "@/store/GlobalState";
+import useWindowSize from "@/hooks/useWindowSize";
+import BoxShadowWrapper from "@/components/BoxShadowWrapper";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import CustomTabs from "@/components/CustomTabs/CustomTabs";
+import LineChartComponent from "@/components/LineChart/LineChart";
 
 const AdminCommerceDetailsBox = ({ title, value, link, image }) => {
   const { width } = useWindowSize();

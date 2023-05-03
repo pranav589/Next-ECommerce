@@ -1,17 +1,17 @@
 import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { DataContext } from "../../store/GlobalState";
-import CartProduct from "../../components/CartProduct";
-import CartSummary from "../../components/CartSummary";
-import Wrapper from "../../components/Wrapper/Wrapper";
 import { apiCall } from "@/utils/apiCall";
-import { addToCart } from "../../store/Actions";
-import CouponCode from "../../components/CouponCode/CouponCode";
 import { toast } from "react-toastify";
 import Confetti from "react-confetti";
-import useWindowSize from "../../hooks/useWindowSize";
-import CustomModal from "../../components/Modal/CustomModal";
 import shortid from "shortid";
+import { DataContext } from "@/store/GlobalState";
+import { addToCart } from "@/store/Actions";
+import useWindowSize from "@/hooks/useWindowSize";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import CartProduct from "@/components/CartProduct";
+import CouponCode from "@/components/CouponCode/CouponCode";
+import CartSummary from "@/components/CartSummary";
+import CustomModal from "@/components/Modal/CustomModal";
 
 function Cart() {
   const [couponCode, setCouponCode] = useState("");

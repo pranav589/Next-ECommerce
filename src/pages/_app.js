@@ -3,14 +3,12 @@ import Head from "next/head";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider } from "@emotion/react";
-import theme from "../config/theme.js";
-import createEmotionCache from "../config/createEmotionCache.js";
-import Layout from "../../components/Layout.js";
-import { DataProvider } from "../../store/GlobalState.js";
-
 const clientSideEmotionCache = createEmotionCache();
-
 import "@/styles/globals.css";
+import Layout from "@/components/Layout.js";
+import { DataProvider } from "@/store/GlobalState";
+import createEmotionCache from "@/config/createEmotionCache";
+import theme from "@/config/theme";
 
 export default function App(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;

@@ -1,16 +1,16 @@
 import Head from "next/head";
-import { useContext, useEffect } from "react";
-import { DataContext } from "../../store/GlobalState";
+import { useEffect } from "react";
+
 import { apiCall } from "@/utils/apiCall";
 import { useState } from "react";
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
-import ProductCard from "../../components/ProductCard/ProductsCard";
 import { useRouter } from "next/router";
-import HeroBanner from "../../components/HeroBanner/HeroBanner";
-import Wrapper from "../../components/Wrapper/Wrapper";
-import HomeCategoryCard from "../../components/HomeCategoryCard/HomeCategoryCard";
 import { toast } from "react-toastify";
-import PaginationComponent from "../../components/PaginationComponent/PaginationComponent";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import HeroBanner from "@/components/HeroBanner/HeroBanner";
+import HomeCategoryCard from "@/components/HomeCategoryCard/HomeCategoryCard";
+import ProductCard from "@/components/ProductCard/ProductsCard";
+import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
 
 const Home = (props) => {
   const [bannerProducts, setBannerProducts] = useState([]);

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import CustomTabs from "../../../../components/CustomTabs/CustomTabs";
-import Wrapper from "../../../../components/Wrapper/Wrapper";
 import {
   Box,
   Button,
@@ -9,15 +7,17 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import BoxShadowWrapper from "../../../../components/BoxShadowWrapper";
 import { toast } from "react-toastify";
 import { apiCall } from "@/utils/apiCall";
 import { useRouter } from "next/router";
-import TableComponent from "../../../../components/TableComponent/TableComponent";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import CustomModal from "../../../../components/Modal/CustomModal";
-import PaginationComponent from "../../../../components/PaginationComponent/PaginationComponent";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import CustomTabs from "@/components/CustomTabs/CustomTabs";
+import BoxShadowWrapper from "@/components/BoxShadowWrapper";
+import TableComponent from "@/components/TableComponent/TableComponent";
+import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
+import CustomModal from "@/components/Modal/CustomModal";
 
 function Products() {
   const router = useRouter();

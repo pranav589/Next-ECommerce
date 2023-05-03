@@ -3,11 +3,11 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import Head from "next/head";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import { DataContext } from "../../../store/GlobalState";
-import { addToCart } from "../../../store/Actions";
-import Wrapper from "../../../components/Wrapper/Wrapper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { DataContext } from "@/store/GlobalState";
+import { addToCart } from "@/store/Actions";
+import Wrapper from "@/components/Wrapper/Wrapper";
 
 function ProductDetails() {
   const router = useRouter();

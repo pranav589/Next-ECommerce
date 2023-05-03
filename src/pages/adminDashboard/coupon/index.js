@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import CustomTabs from "../../../../components/CustomTabs/CustomTabs";
-import Wrapper from "../../../../components/Wrapper/Wrapper";
 import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
-import BoxShadowWrapper from "../../../../components/BoxShadowWrapper";
-import CustomInputBox from "../../../../components/CustomInputBox/CustomInputBox";
 import { toast } from "react-toastify";
-import { DataContext } from "../../../../store/GlobalState";
 import { apiCall } from "@/utils/apiCall";
-import CategoryCard from "../../../../components/CategoryCard/CategoryCard";
-import PaginationComponent from "../../../../components/PaginationComponent/PaginationComponent";
 import "react-datepicker/dist/react-datepicker.css";
-import DatePickerComponent from "../../../../components/DatePickerComponent/DatePickerComponent";
+import { DataContext } from "@/store/GlobalState";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import CustomTabs from "@/components/CustomTabs/CustomTabs";
+import BoxShadowWrapper from "@/components/BoxShadowWrapper";
+import CustomInputBox from "@/components/CustomInputBox/CustomInputBox";
+import DatePickerComponent from "@/components/DatePickerComponent/DatePickerComponent";
+import CategoryCard from "@/components/CategoryCard/CategoryCard";
+import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
 
 function Coupon() {
   const [triggerCouponCall, setTriggerCouponCall] = useState(false);
