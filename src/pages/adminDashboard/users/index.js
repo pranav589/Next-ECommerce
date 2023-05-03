@@ -18,6 +18,7 @@ import TableComponent from "@/components/TableComponent/TableComponent";
 import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
 import CustomModal from "@/components/Modal/CustomModal";
 import CustomInputBox from "@/components/CustomInputBox/CustomInputBox";
+import { DataContext } from "@/store/GlobalState";
 
 function Users() {
   const { state } = useContext(DataContext);
