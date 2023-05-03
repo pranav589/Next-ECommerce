@@ -1,8 +1,8 @@
 import connectDB from "@/utils/connectDB";
 import User from "../../../models/userModel";
-import auth from "../../../../middleware/auth";
 import CryptoJS from "crypto-js";
 import bcrypt from "bcrypt";
+import auth from "@/middleware/auth";
 
 connectDB();
 

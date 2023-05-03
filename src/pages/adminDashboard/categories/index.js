@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import CustomTabs from "../../../../components/CustomTabs/CustomTabs";
-import Wrapper from "../../../../components/Wrapper/Wrapper";
 import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
-import BoxShadowWrapper from "../../../../components/BoxShadowWrapper";
-import CustomInputBox from "../../../../components/CustomInputBox/CustomInputBox";
 import { toast } from "react-toastify";
 import { imageUpload } from "@/utils/imageUpload";
-import { DataContext } from "../../../../store/GlobalState";
 import { apiCall } from "@/utils/apiCall";
-import CategoryCard from "../../../../components/CategoryCard/CategoryCard";
-import PaginationComponent from "../../../../components/PaginationComponent/PaginationComponent";
+import { DataContext } from "@/store/GlobalState";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import CustomTabs from "@/components/CustomTabs/CustomTabs";
+import BoxShadowWrapper from "@/components/BoxShadowWrapper";
+import CustomInputBox from "@/components/CustomInputBox/CustomInputBox";
+import CategoryCard from "@/components/CategoryCard/CategoryCard";
+import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
 
 function Categories() {
   const [triggerCategoryCall, setTriggerCategoryCall] = useState(false);

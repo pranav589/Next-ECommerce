@@ -11,13 +11,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
-import valid from "@/utils/valid";
 import { apiCall } from "@/utils/apiCall";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
-import { DataContext } from "../../store/GlobalState";
 import { useRouter } from "next/router";
 import CryptoJS from "crypto-js";
+import { DataContext } from "@/store/GlobalState";
 
 const theme = createTheme();
 

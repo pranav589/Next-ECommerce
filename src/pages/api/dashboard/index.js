@@ -2,7 +2,7 @@ import connectDB from "@/utils/connectDB";
 import Orders from "../../../models/orderModel";
 import Product from "../../../models/productModel";
 import User from "../../../models/userModel";
-import auth from "../../../../middleware/auth";
+import auth from "@/middleware/auth";
 
 connectDB();
 

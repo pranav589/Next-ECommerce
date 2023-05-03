@@ -1,12 +1,12 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import Wrapper from "../../../components/Wrapper/Wrapper";
-import SearchProductList from "../../../components/SearchProductList/SearchProductList";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { apiCall } from "@/utils/apiCall";
-import PaginationComponent from "../../../components/PaginationComponent/PaginationComponent";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import SearchProductList from "@/components/SearchProductList/SearchProductList";
+import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
 
 function SearchPage() {
   const [page, setPage] = useState(1);

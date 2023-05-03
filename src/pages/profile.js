@@ -1,18 +1,18 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
-import Wrapper from "../../components/Wrapper/Wrapper";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import BoxShadowWrapper from "../../components/BoxShadowWrapper";
-import CustomInputBox from "../../components/CustomInputBox/CustomInputBox";
-import TableComponent from "../../components/TableComponent/TableComponent";
 import { apiCall } from "@/utils/apiCall";
 import CryptoJS from "crypto-js";
 import { toast } from "react-toastify";
-import { DataContext } from "../../store/GlobalState";
-import PaginationComponent from "../../components/PaginationComponent/PaginationComponent";
+import { DataContext } from "@/store/GlobalState";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import BoxShadowWrapper from "@/components/BoxShadowWrapper";
+import CustomInputBox from "@/components/CustomInputBox/CustomInputBox";
+import TableComponent from "@/components/TableComponent/TableComponent";
+import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
 
-function profile() {
+function Profile() {
   const initialData = {
     name: "",
     email: "",
@@ -340,4 +340,4 @@ function profile() {
   );
 }
 
-export default profile;
+export default Profile;

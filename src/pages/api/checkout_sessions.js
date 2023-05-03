@@ -1,5 +1,4 @@
-import NextCors from "nextjs-cors";
-import auth from "../../../middleware/auth";
+import auth from "@/middleware/auth";
 
 const stripeSecretKey = process.env.STRIPE.SECRET_KEY;
 

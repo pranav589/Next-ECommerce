@@ -1,8 +1,7 @@
 import connectDB from "@/utils/connectDB";
 import Orders from "../../../models/orderModel";
-
-import auth from "../../../../middleware/auth";
 import moment from "moment/moment";
+import auth from "@/middleware/auth";
 
 connectDB();
 

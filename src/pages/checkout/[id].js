@@ -1,12 +1,13 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import Wrapper from "../../../components/Wrapper/Wrapper";
-import CustomInputBox from "../../../components/CustomInputBox/CustomInputBox";
+
 import { apiCall } from "@/utils/apiCall";
 import { toast } from "react-toastify";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useRouter } from "next/router";
-import { DataContext } from "../../../store/GlobalState";
+import { DataContext } from "@/store/GlobalState";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import CustomInputBox from "@/components/CustomInputBox/CustomInputBox";
 
 function Checkout() {
   const router = useRouter();

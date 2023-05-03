@@ -1,6 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import CustomTabs from "../../../../components/CustomTabs/CustomTabs";
-import Wrapper from "../../../../components/Wrapper/Wrapper";
 import {
   Box,
   Checkbox,
@@ -8,17 +6,18 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import BoxShadowWrapper from "../../../../components/BoxShadowWrapper";
-import TableComponent from "../../../../components/TableComponent/TableComponent";
 import { useRouter } from "next/router";
 import { apiCall } from "@/utils/apiCall";
-import CustomModal from "../../../../components/Modal/CustomModal";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import CustomInputBox from "../../../../components/CustomInputBox/CustomInputBox";
 import { toast } from "react-toastify";
-import { DataContext } from "../../../../store/GlobalState";
-import PaginationComponent from "../../../../components/PaginationComponent/PaginationComponent";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import CustomTabs from "@/components/CustomTabs/CustomTabs";
+import BoxShadowWrapper from "@/components/BoxShadowWrapper";
+import TableComponent from "@/components/TableComponent/TableComponent";
+import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
+import CustomModal from "@/components/Modal/CustomModal";
+import CustomInputBox from "@/components/CustomInputBox/CustomInputBox";
 
 function Users() {
   const { state } = useContext(DataContext);

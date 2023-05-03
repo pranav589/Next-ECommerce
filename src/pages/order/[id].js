@@ -1,7 +1,7 @@
 import Head from "next/head";
-import DetailOrder from "../../../components/DetailOrder/DetailOrder";
-import Wrapper from "../../../components/Wrapper/Wrapper";
 import { Box } from "@mui/material";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import DetailOrder from "@/components/DetailOrder/DetailOrder";
 
 const OrderDetails = () => {
   return (

@@ -1,11 +1,11 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import Wrapper from "../../../components/Wrapper/Wrapper";
 import { Box, CircularProgress, Typography } from "@mui/material";
-import HomeCategoryCard from "../../../components/HomeCategoryCard/HomeCategoryCard";
 import { toast } from "react-toastify";
 import { apiCall } from "@/utils/apiCall";
-import PaginationComponent from "../../../components/PaginationComponent/PaginationComponent";
+import Wrapper from "@/components/Wrapper/Wrapper";
+import HomeCategoryCard from "@/components/HomeCategoryCard/HomeCategoryCard";
+import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
 
 function Categories() {
   const [categories, setCategories] = useState([]);

@@ -1,6 +1,6 @@
 import connectDB from "@/utils/connectDB";
-import auth from "../../../../middleware/auth";
 import Coupon from "../../../models/couponModel";
+import auth from "@/middleware/auth";
 
 connectDB();
 

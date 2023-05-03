@@ -1,6 +1,6 @@
 import connectDB from "@/utils/connectDB";
-import auth from "../../../../middleware/auth";
 import Categories from "../../../models/categoryModel";
+import auth from "@/middleware/auth";
 
 connectDB();
 
