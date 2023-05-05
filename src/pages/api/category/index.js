@@ -51,11 +51,13 @@ const getCategories = async (req, res) => {
     if (!limit) limit = 10;
 
     const skip = (page - 1) * limit;
+    await db.connect();
     const categories = await Categories.find()
       .sort({ createdAt: -1 })
       .skip(parseInt(skip))
       .limit(parseInt(limit));
     const totalCount = await Categories.countDocuments();
+    await db.disconnect();
     return res.json({
       status: "success",
       Data: { categories, totalCount },
