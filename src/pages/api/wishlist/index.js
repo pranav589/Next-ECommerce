@@ -11,37 +11,29 @@ export const config = {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
   switch (req.method) {
-    case "POST":
-      await wishListProduct(req, res);
+    case "GET":
+      await getWishlistForLoggedUser(req, res);
       break;
   }
 };
 
-const wishListProduct = async (req, res) => {
+const getWishlistForLoggedUser = async (req, res) => {
   try {
     const result = await auth(req, res);
 
-    const { productId } = req.body;
-
     if (result.id) {
       await db.connect();
-      const validateProduct = await Wishlist.findOne({
-        product: productId,
+      const wishlistedProducts = await Wishlist.find({
         userId: result.id,
+      }).populate({
+        path: "product",
+        model: "product",
       });
-      if (!validateProduct) {
-        const wishlist = new Wishlist({
-          userId: result.id,
-          product: productId,
-        });
-        await wishlist.save();
-        return res.json({
-          status: "success",
-          Data: wishlist,
-        });
-      }
       await db.disconnect();
-      return res.status(400).json({ err: "Product Already Wishlisted" });
+      return res.json({
+        status: "success",
+        Data: wishlistedProducts,
+      });
     }
 
     return res.status(400).json({ err: "Unauthorized access." });

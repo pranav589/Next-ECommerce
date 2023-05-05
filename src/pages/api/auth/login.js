@@ -1,10 +1,8 @@
-import connectDB from "@/utils/connectDB";
 import Users from "../../../models/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import CryptoJS from "crypto-js";
-
-connectDB();
+import db from "@/utils/connectDB";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
@@ -20,6 +18,7 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     const decryptPassword = CryptoJS.AES.decrypt(password, "secret key 1");
     const stringedPassword = decryptPassword.toString(CryptoJS.enc.Utf8);
+    await db.connect();
     const user = await Users.findOne({ email });
     if (!user) {
       return res.status(400).json({ err: "User does not exist." });
@@ -33,6 +32,7 @@ const login = async (req, res) => {
     const token = jwt.sign(payload, process.env.TOKEN_SECRET, {
       expiresIn: "30d",
     });
+    await db.disconnect();
     res.json({
       token,
       msg: "Login Success!",

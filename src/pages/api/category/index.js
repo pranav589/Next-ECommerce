@@ -1,8 +1,6 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Categories from "../../../models/categoryModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 export const config = {
   api: {
@@ -26,6 +24,7 @@ const createCategory = async (req, res) => {
   try {
     const result = await auth(req, res);
     const { name, image } = req.body;
+    await db.connect();
     if (result.role !== "admin" || result.root === false) {
       return res.status(400).json({ err: "Unauthorized access" });
     }
@@ -34,6 +33,7 @@ const createCategory = async (req, res) => {
     }
     const newCategory = new Categories({ name, image });
     await newCategory.save();
+    await db.disconnect();
     return res.json({
       status: "success",
       msg: "Category created successfully.",
@@ -53,8 +53,8 @@ const getCategories = async (req, res) => {
     const skip = (page - 1) * limit;
     const categories = await Categories.find()
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
+      .skip(parseInt(skip))
+      .limit(parseInt(limit));
     const totalCount = await Categories.countDocuments();
     return res.json({
       status: "success",

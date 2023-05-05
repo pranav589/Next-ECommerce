@@ -1,9 +1,7 @@
-import connectDB from "@/utils/connectDB";
 import Coupon from "../../../../models/couponModel";
 import Cart from "../../../../models/cartModel";
 import auth from "@/middleware/auth";
-
-connectDB();
+import db from "@/utils/connectDB";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
@@ -17,7 +15,7 @@ export default async (req, res) => {
 const applyCoupon = async (req, res) => {
   try {
     const result = await auth(req, res);
-
+    await db.connect();
     const { name, isApplied } = req.body;
     const { type } = req.query;
 
@@ -56,7 +54,7 @@ const applyCoupon = async (req, res) => {
     );
 
     const coupon = await isExist.updateOne({ users: result.id });
-
+    await db.disconnect();
     return res.json({
       status: "success",
       msg: userCart?.couponCode === name ? "Coupon Removed" : "Coupon applied",

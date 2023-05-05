@@ -1,7 +1,5 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Products from "../../../models/productModel";
-
-connectDB();
 
 export const config = {
   api: {
@@ -65,9 +63,9 @@ const getProductsFromSearchQuery = async (req, res) => {
         },
       },
     ];
-
+    await db.connect();
     const products = await Products.aggregate(query);
-
+    await db.disconnect();
     return res.json({
       status: "success",
       Data: products,

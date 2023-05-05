@@ -1,7 +1,5 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Products from "../../../../models/productModel";
-
-connectDB();
 
 export const config = {
   api: {
@@ -24,7 +22,7 @@ const getProductsFromCategory = async (req, res) => {
     if (!page) page = 1;
     if (!limit) limit = 10;
 
-    const skip = (page - 1) * limit;
+    const skip = (parseInt(page) - 1) * parseInt(limit);
     const query = [
       {
         $match: {
@@ -64,7 +62,9 @@ const getProductsFromCategory = async (req, res) => {
         },
       },
     ];
+    await db.connect();
     const products = await Products.aggregate(query);
+    await db.disconnect();
     return res.json({
       status: "success",
       Data: products,

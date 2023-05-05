@@ -54,6 +54,19 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: "regular",
     },
+    ratings: [
+      {
+        star: Number,
+        comment: String,
+        postedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "users",
+        },
+      },
+    ],
+    totalRating: {
+      type: String,
+    },
   },
   {
     timestamps: true,
@@ -61,5 +74,7 @@ const productSchema = new mongoose.Schema(
 );
 
 let Dataset =
-  mongoose.models.product || mongoose.model("product", productSchema);
+  mongoose.models && "product" in mongoose.models
+    ? mongoose.models.product
+    : mongoose.model("product", productSchema);
 export default Dataset;

@@ -1,10 +1,8 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Orders from "../../../models/orderModel";
 import Product from "../../../models/productModel";
 import User from "../../../models/userModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
@@ -18,6 +16,7 @@ const getDashboardSummary = async (req, res) => {
   try {
     const result = await auth(req, res);
     if (result?.role === "admin" || result?.root === true) {
+      await db.connect();
       const ordersCount = await Orders.find({
         payment_status: true,
       }).countDocuments();
@@ -40,6 +39,7 @@ const getDashboardSummary = async (req, res) => {
 
       const productsCount = await Product.countDocuments();
       const usersCount = await User.countDocuments();
+      await db.disconnect();
       return res.json({
         status: "success",
         Data: {

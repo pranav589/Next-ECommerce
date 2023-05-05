@@ -22,6 +22,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { DataContext } from "@/store/GlobalState";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -169,6 +170,23 @@ export default function Navbar() {
         </IconButton>
         <p>Cart</p>
       </MenuItem>
+      {auth?.isVerified && auth?.user?.role === "user" && (
+        <MenuItem
+          onClick={() => {
+            router.push("/wishlist");
+            handleMenuClose();
+          }}
+        >
+          <IconButton
+            size="large"
+            aria-label="show 4 new mails"
+            color="inherit"
+          >
+            <FavoriteIcon />
+          </IconButton>
+          <p>WishList</p>
+        </MenuItem>
+      )}
       {auth?.isVerified && (
         <MenuItem
           onClick={() => {
@@ -289,6 +307,15 @@ export default function Navbar() {
             >
               Cart
             </Button>
+            {auth?.isVerified && auth?.user?.role === "user" && (
+              <Button
+                startIcon={<FavoriteIcon />}
+                sx={{ color: "white", marginRight: "10px" }}
+                onClick={() => router.push("/wishlist")}
+              >
+                Wishlist
+              </Button>
+            )}
             {auth?.isVerified && auth?.user?.role === "admin" && (
               <Button
                 startIcon={<DashboardIcon />}

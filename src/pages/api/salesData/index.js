@@ -1,9 +1,7 @@
-import connectDB from "@/utils/connectDB";
 import Orders from "../../../models/orderModel";
 import moment from "moment/moment";
 import auth from "@/middleware/auth";
-
-connectDB();
+import db from "@/utils/connectDB";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
@@ -31,7 +29,7 @@ const getSalesData = async (req, res) => {
       }
 
       const extendedDate = getDates(startDate, endDate);
-
+      await db.connect();
       const salesData = await Orders.aggregate([
         {
           $match: {
@@ -73,6 +71,7 @@ const getSalesData = async (req, res) => {
         if (elementInArr2) obj.Revenue = elementInArr2.count;
         if (!elementInArr2) obj.Revenue = 0;
       });
+      await db.disconnect();
       return res.json({
         status: "success",
         Data: extendedDate,

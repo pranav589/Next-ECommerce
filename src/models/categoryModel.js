@@ -18,6 +18,8 @@ const categorySchema = new mongoose.Schema(
 );
 
 let Dataset =
-  mongoose.models.category || mongoose.model("category", categorySchema);
+  mongoose.models && "category" in mongoose.models
+    ? mongoose.models.category
+    : mongoose.model("category", categorySchema);
 
 export default Dataset;

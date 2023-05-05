@@ -10,6 +10,7 @@ export const DataProvider = ({ children }) => {
   const initialState = {
     auth: {},
     cart: [],
+    wishlist: [],
   };
   const [state, dispatch] = useReducer(reducers, initialState);
   const { cart, auth } = state;
@@ -41,6 +42,7 @@ export const DataProvider = ({ children }) => {
 
     checkLogin();
   }, [token]);
+
   useEffect(() => {
     if (token && auth?.isVerified) {
       const fetchCart = async () => {
@@ -65,10 +67,23 @@ export const DataProvider = ({ children }) => {
   }, [auth?.isVerified]);
 
   useEffect(() => {
-    if (!token) {
-      localStorage.setItem("__next__cart01__devat", JSON.stringify(cart));
-    }
-  }, [cart]);
+    const fetchWishListData = async () => {
+      if (token && auth?.isVerified === true) {
+        try {
+          const res = await apiCall("GET", "wishlist", token);
+          if (res?.data?.status === "success") {
+            dispatch({
+              type: "WISHLIST",
+              payload: res?.data?.Data,
+            });
+          }
+        } catch (error) {
+          toast.error(error?.response?.data?.err);
+        }
+      }
+    };
+    fetchWishListData();
+  }, [auth?.isVerified]);
 
   return (
     <DataContext.Provider value={{ state, dispatch }}>

@@ -8,13 +8,18 @@ import { useRouter } from "next/router";
 import { DataContext } from "@/store/GlobalState";
 import { addToCart } from "@/store/Actions";
 import Wrapper from "@/components/Wrapper/Wrapper";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 function ProductDetails() {
+  const token = typeof window !== "undefined" && localStorage.getItem("token");
   const router = useRouter();
   const [productDetailsData, setProductDetailsData] = useState(null);
+  const [isWishListed, setIsWishListed] = useState(false);
   const [tab, setTab] = useState(0);
   const { state, dispatch } = React.useContext(DataContext);
-  const { auth } = state;
+  const { auth, wishlist } = state;
 
   const handleAddToCart = async (e, product, userId, quantity = 1) => {
     e.stopPropagation();
@@ -78,17 +83,62 @@ function ProductDetails() {
 
   useEffect(() => {
     const fetchProductDetails = async () => {
-      try {
-        const res = await apiCall("GET", `product/${router.query?.id}`);
-        if (res?.data?.status === "success") {
-          setProductDetailsData(res?.data?.Data);
+      if (router?.query?.id) {
+        try {
+          const res = await apiCall("GET", `product/${router.query?.id}`);
+          if (res?.data?.status === "success") {
+            setProductDetailsData(res?.data?.Data);
+          }
+        } catch (error) {
+          toast.error(error?.response?.data?.err);
         }
-      } catch (error) {
-        toast.error(error?.response?.data?.err);
       }
     };
     fetchProductDetails();
   }, [router]);
+
+  useEffect(() => {
+    if (wishlist?.length > 0) {
+      const validateProduct = wishlist?.find(
+        (item) => item?.product?._id === productDetailsData?._id
+      );
+
+      if (validateProduct) {
+        setIsWishListed(true);
+      }
+    }
+  }, [productDetailsData?._id, wishlist]);
+
+  const handleAddToWishlist = async (e) => {
+    try {
+      const data = {
+        productId: productDetailsData?._id,
+      };
+      const res = await apiCall("POST", "wishlist/add", token, data);
+      if (res?.data?.status === "success") {
+        setIsWishListed(true);
+        toast.success("Item added to the wish-list.");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.err);
+    }
+  };
+
+  const handleRemoveFromWishlist = async (e) => {
+    try {
+      const res = await apiCall(
+        "DELETE",
+        `wishlist/${productDetailsData?._id}`,
+        token
+      );
+      if (res?.data?.status === "success") {
+        setIsWishListed(false);
+        toast.success("Item removed from wish-list.");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.err);
+    }
+  };
 
   return (
     <>
@@ -168,7 +218,9 @@ function ProductDetails() {
                     variant="h6"
                     sx={{
                       color: productDetailsData?.discountPrice ? "#000" : "red",
-                      marginLeft: "15px",
+                      marginLeft: productDetailsData?.discountPrice
+                        ? "15px"
+                        : "0px",
                       textDecoration: productDetailsData?.discountPrice
                         ? "line-through"
                         : "none",
@@ -191,32 +243,83 @@ function ProductDetails() {
               <Typography variant="body1" sx={{ width: "100%" }}>
                 {productDetailsData?.description}
               </Typography>
-              <Button
-                variant="contained"
+              <Box
                 sx={{
-                  width: {
-                    xs: "100%",
-                    sm: "100%",
-                    md: "60%",
-                  },
-                  mt: 3,
-                  mb: 2,
-                  background: "#539165",
-                  "&:hover": { background: "#539165" },
-                  borderRadius: "30px",
-                  height: "50px",
+                  display: "flex",
+                  alignItems: "center",
                 }}
-                onClick={(e) =>
-                  handleAddToCart(e, productDetailsData, state?.auth?.user?.id)
-                }
-                disabled={productDetailsData?.inStock === 0}
               >
-                {productDetailsData?.inStock === 0
-                  ? "Out of stock"
-                  : "Add to cart"}
-              </Button>
+                <Button
+                  variant="contained"
+                  sx={{
+                    width: {
+                      xs: "100%",
+                      sm: "100%",
+                      md: "60%",
+                    },
+                    mt: 3,
+                    mb: 2,
+                    background: "#539165",
+                    "&:hover": { background: "#539165" },
+                    borderRadius: "30px",
+                    height: "50px",
+                    mr: 3,
+                  }}
+                  onClick={(e) =>
+                    handleAddToCart(
+                      e,
+                      productDetailsData,
+                      state?.auth?.user?.id
+                    )
+                  }
+                  disabled={productDetailsData?.inStock === 0}
+                  startIcon={<ShoppingCartIcon />}
+                >
+                  {productDetailsData?.inStock === 0
+                    ? "Out of stock"
+                    : "Add to cart"}
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{
+                    width: {
+                      xs: "100%",
+                      sm: "100%",
+                      md: "60%",
+                    },
+                    mt: 3,
+                    mb: 2,
+                    background: "#539165",
+                    "&:hover": { background: "#539165" },
+                    borderRadius: "30px",
+                    height: "50px",
+                  }}
+                  startIcon={
+                    isWishListed ? <FavoriteIcon /> : <FavoriteBorderIcon />
+                  }
+                  onClick={(e) => {
+                    isWishListed
+                      ? handleRemoveFromWishlist(e)
+                      : handleAddToWishlist(e);
+                  }}
+                >
+                  {isWishListed ? "Wishlisted" : "Wishlist"}
+                </Button>
+              </Box>
             </Grid>
           </Grid>
+          <Box>
+            <Typography
+              sx={{
+                textAlign: "center",
+                textTransform: "uppercase",
+                marginTop: "20px",
+                fontSize: "24px",
+              }}
+            >
+              User Reviews
+            </Typography>
+          </Box>
         </Box>
       </Wrapper>
     </>

@@ -25,11 +25,13 @@ function CategoryCard({
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Typography sx={{ fontSize: "18px" }}>{card?.name}</Typography>
-        <Typography sx={{ fontSize: "13px", color: "crimson" }}>
-          {new Date(card?.expiry) < new Date(Date.now())
-            ? "Expired"
-            : `Expiry Date: ${new Date(card?.expiry).toLocaleDateString()}`}
-        </Typography>
+        {card?.expiry && (
+          <Typography sx={{ fontSize: "13px", color: "crimson" }}>
+            {new Date(card?.expiry) < new Date(Date.now())
+              ? "Expired"
+              : `Expiry Date: ${new Date(card?.expiry).toLocaleDateString()}`}
+          </Typography>
+        )}
       </Box>
 
       <Box>

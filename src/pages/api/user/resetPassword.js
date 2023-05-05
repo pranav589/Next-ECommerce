@@ -1,10 +1,8 @@
-import connectDB from "@/utils/connectDB";
 import User from "../../../models/userModel";
 import CryptoJS from "crypto-js";
 import bcrypt from "bcrypt";
 import auth from "@/middleware/auth";
-
-connectDB();
+import db from "@/utils/connectDB";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
@@ -19,6 +17,7 @@ const resetPassword = async (req, res) => {
   try {
     const result = await auth(req, res);
     const { oldPassword, newPassword } = req.body;
+    await db.connect();
     const user = await User.findById({ _id: result.id });
     if (!user) {
       return res.status(400).json({ err: "User does not exist." });
@@ -42,6 +41,7 @@ const resetPassword = async (req, res) => {
 
     const passwordHash = await bcrypt.hash(stringedNewPassword, 12);
     await User.findOneAndUpdate({ _id: result.id }, { password: passwordHash });
+    await db.disconnect();
     return res.json({
       status: "success",
       msg: "Password updated successfully!",

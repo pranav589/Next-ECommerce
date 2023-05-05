@@ -12,6 +12,11 @@ const reducers = (state, action) => {
         ...state,
         cart: action.payload,
       };
+    case ACTIONS.WISHLIST:
+      return {
+        ...state,
+        wishlist: action.payload,
+      };
   }
 };
 

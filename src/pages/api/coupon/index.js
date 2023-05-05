@@ -1,8 +1,6 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Coupon from "../../../models/couponModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
@@ -20,6 +18,7 @@ const createCoupon = async (req, res) => {
     const result = await auth(req, res);
     const { name, expiry, discount } = req.body;
     if (result.role === "admin" || result.root === true) {
+      await db.connect();
       const isExist = await Coupon.findOne({ name: name });
       if (isExist) {
         return res
@@ -27,7 +26,7 @@ const createCoupon = async (req, res) => {
           .json({ err: "Coupon of this name already exist." });
       }
       const newCoupon = await Coupon.create({ name, expiry, discount });
-
+      await db.disconnect();
       return res.json({ status: "success", Data: newCoupon });
     }
     return res.status(400).json({ err: "Unauthorized access" });
@@ -44,14 +43,15 @@ const getCoupons = async (req, res) => {
 
     const skip = (page - 1) * limit;
     const result = await auth(req, res);
-    console.log({ result });
+
     if (result.role === "admin" || result.root === true) {
+      await db.connect();
       const couponCount = await Coupon.countDocuments();
       const coupons = await Coupon.find()
         .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit);
-
+        .skip(parseInt(skip))
+        .limit(parseInt(limit));
+      await db.disconnect();
       return res.json({
         status: "success",
         Data: {

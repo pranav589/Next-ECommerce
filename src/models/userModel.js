@@ -34,6 +34,9 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-let Dataset = mongoose.models.user || mongoose.model("user", userSchema);
+let Dataset =
+  mongoose.models && "user" in mongoose.models
+    ? mongoose.models.user
+    : mongoose.model("user", userSchema);
 
 export default Dataset;

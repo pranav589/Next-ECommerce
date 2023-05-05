@@ -1,8 +1,6 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Address from "../../../models/addressModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 export const config = {
   api: {
@@ -30,6 +28,7 @@ const addAddress = async (req, res) => {
     const result = await auth(req, res);
 
     const { userId, name, address1, address2, city, state, phone } = req.body;
+    await db.connect();
     const user = await Address.find({ userId: result.id });
     if (user?.length > 0) {
       return res.status(400).json({
@@ -46,6 +45,7 @@ const addAddress = async (req, res) => {
       phone,
     });
     await newAddress.save();
+    await db.disconnect();
     return res.json({
       status: "success",
       Data: newAddress,

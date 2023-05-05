@@ -1,8 +1,5 @@
-import connectDB from "@/utils/connectDB";
-
+import db from "@/utils/connectDB";
 import Cart from "../../../../models/cartModel";
-
-connectDB();
 
 export const config = {
   api: {
@@ -28,6 +25,7 @@ export default async (req, res) => {
 const getCartForGuest = async (req, res) => {
   try {
     const { id } = req.query;
+    await db.connect();
 
     const cart = await Cart.find({ _id: id }).populate({
       path: "products",
@@ -49,7 +47,7 @@ const getCartForGuest = async (req, res) => {
           : acc + curr?.productId?.price * curr?.quantity,
       0
     );
-
+    await db.disconnect();
     return res.json({
       status: "success",
       Data: cart,
@@ -63,6 +61,7 @@ const getCartForGuest = async (req, res) => {
 const decreaseQuantityForGuest = async (req, res) => {
   try {
     const { cartId, products } = req.body;
+    await db.connect();
     let cart = await Cart.findOne({ _id: cartId });
     if (cart) {
       if (products?.length > 0) {
@@ -86,6 +85,7 @@ const decreaseQuantityForGuest = async (req, res) => {
         let final = [...cart.products, ...unique1];
         cart["products"] = final;
         cart = await cart.save();
+        await db.disconnect();
         return res.status(201).json({ status: "success", Data: cart });
       }
     }

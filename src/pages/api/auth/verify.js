@@ -1,8 +1,6 @@
-import connectDB from "../../../utils/connectDB";
+import db from "@/utils/connectDB";
 import Users from "../../../models/userModel";
 import jwt from "jsonwebtoken";
-
-connectDB();
 
 export const config = {
   api: {
@@ -31,8 +29,10 @@ const verify = async (req, res) => {
         return res
           .status(400)
           .json({ err: "Verification Failed", verification: false });
+      await db.connect();
       const user = await Users.findById(verified.id);
       if (!user) return res.status(400).json({ err: "User not found" });
+      await db.disconnect();
       return res.json({
         msg: "Verified",
         user: {

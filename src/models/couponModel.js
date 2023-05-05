@@ -28,6 +28,9 @@ const couponSchema = new mongoose.Schema(
   }
 );
 
-let Dataset = mongoose.models.coupon || mongoose.model("coupon", couponSchema);
+let Dataset =
+  mongoose.models && "coupon" in mongoose.models
+    ? mongoose.models.coupon
+    : mongoose.model("coupon", couponSchema);
 
 export default Dataset;

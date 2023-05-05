@@ -36,6 +36,8 @@ const addressSchema = new mongoose.Schema(
 );
 
 let Dataset =
-  mongoose.models.address || mongoose.model("address", addressSchema);
+  mongoose.models && "address" in mongoose.models
+    ? mongoose.models.address
+    : mongoose.model("address", addressSchema);
 
 export default Dataset;

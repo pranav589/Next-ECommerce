@@ -1,11 +1,9 @@
 import Stripe from "stripe";
 import { buffer } from "micro";
-import connectDB from "@/utils/connectDB";
 import Orders from "../../models/orderModel";
 
 import Products from "../../models/productModel";
-
-connectDB();
+import db from "@/utils/connectDB";
 
 const stripeSecretKey = process.env.STRIPE.SECRET_KEY;
 const endpointSecret = `${process.env.STRIPE_ENDPOINT_SECRET}`;
@@ -22,6 +20,7 @@ export const config = {
 
 const createOrder = async (customer, data) => {
   try {
+    await db.connect();
     const items = JSON.parse(customer.metadata.cart);
     const updateOrder = await Orders.findOneAndUpdate(
       { _id: customer.metadata.orderId },
@@ -47,6 +46,7 @@ const createOrder = async (customer, data) => {
         item.productId?.sold
       );
     });
+    await db.disconnect();
   } catch (error) {
     return console.log("createOrder", error.message);
   }

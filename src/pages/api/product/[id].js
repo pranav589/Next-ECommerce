@@ -1,9 +1,7 @@
-import connectDB from "@/utils/connectDB";
 import Products from "../../../models/productModel";
 import Categories from "../../../models/categoryModel";
 import auth from "@/middleware/auth";
-
-connectDB();
+import db from "@/utils/connectDB";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
@@ -23,13 +21,14 @@ export default async (req, res) => {
 const getProduct = async (req, res) => {
   try {
     const { id } = req.query;
+    await db.connect();
     const product = await Products.findById(id);
 
     if (!product)
       return res.status(400).json({ err: "This Product does not exist." });
 
     const category = await Categories.findById(product.category);
-
+    await db.disconnect();
     return res.json({
       status: "success",
       Data: product,
@@ -73,6 +72,7 @@ const updateProduct = async (req, res) => {
     const discountPrice = discount
       ? Math.floor(price - (price * discount) / 100)
       : null;
+    await db.connect();
     const updateProduct = await Products.findOneAndUpdate(
       { _id: id },
       {
@@ -87,6 +87,7 @@ const updateProduct = async (req, res) => {
         type,
       }
     );
+    await db.disconnect();
     return res.json({
       status: "success",
       msg: "Product updated successfully.",
@@ -104,8 +105,9 @@ const deleteProduct = async (req, res) => {
     if (result.role !== "admin" || result.root === false) {
       return res.status(400).json({ err: "Unauthorized access" });
     }
-
+    await db.connect();
     const deleteProduct = await Products.findOneAndDelete({ _id: id });
+    await db.disconnect();
     return res.json({
       status: "success",
       msg: "Product Deleted.",

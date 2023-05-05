@@ -1,8 +1,6 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Categories from "../../../models/categoryModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 export const config = {
   api: {
@@ -33,6 +31,7 @@ const updateCategory = async (req, res) => {
     if (name?.length === 0 || image?.length === 0) {
       return res.status(400).json({ err: "Name and image is required" });
     }
+    await db.connect();
     const updateCategory = await Categories.findOneAndUpdate(
       { _id: id },
       {
@@ -40,6 +39,7 @@ const updateCategory = async (req, res) => {
         image,
       }
     );
+    await db.disconnect();
     return res.json({
       status: "success",
       Data: updateCategory,

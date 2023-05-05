@@ -1,8 +1,6 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Products from "../../../models/productModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
@@ -19,16 +17,18 @@ export default async (req, res) => {
 const getProducts = async (req, res) => {
   try {
     let { page, limit } = req.query;
+
     if (!page) page = 1;
     if (!limit) limit = 10;
 
     const skip = (page - 1) * limit;
+    await db.connect();
     const totalCount = await Products.countDocuments();
     const products = await Products.find()
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-
+      .skip(parseInt(skip))
+      .limit(parseInt(limit));
+    await db.disconnect();
     res.json({
       status: "success",
       result: products.length,
@@ -71,6 +71,7 @@ const createProduct = async (req, res) => {
     const discountPrice = discount
       ? Math.floor(price - (price * discount) / 100)
       : null;
+    await db.connect();
     const newProduct = new Products({
       title: title.toLowerCase(),
       price,
@@ -83,6 +84,7 @@ const createProduct = async (req, res) => {
       type,
     });
     await newProduct.save();
+    await db.disconnect();
     return res.json({
       status: "success",
       msg: "Product created successfully.",

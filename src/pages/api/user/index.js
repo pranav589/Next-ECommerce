@@ -1,8 +1,6 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import User from "../../../models/userModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
@@ -25,11 +23,13 @@ const getUsers = async (req, res) => {
       if (!limit) limit = 10;
 
       const skip = (page - 1) * limit;
+      await db.connect();
       const users = await User.find()
         .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit);
+        .skip(parseInt(skip))
+        .limit(parseInt(limit));
       let totalCount = await User.countDocuments();
+      await db.disconnect();
       return res.json({ status: "success", Data: { users, totalCount } });
     }
     return res.status(400).json({ err: "Unauthorized access" });

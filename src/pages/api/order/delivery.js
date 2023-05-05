@@ -1,8 +1,6 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Orders from "../../../models/orderModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 export const config = {
   api: {
@@ -24,6 +22,7 @@ const deliverOrder = async (req, res) => {
     const result = await auth(req, res);
     const { orderId, payment_status } = req.body;
     if (result.role === "admin" || result.root === true) {
+      await db.connect();
       const updateOrder = await Orders.findOneAndUpdate(
         { _id: orderId },
         {
@@ -31,6 +30,7 @@ const deliverOrder = async (req, res) => {
           dateOfDelivery: payment_status === true ? Date.now() : "",
         }
       );
+      await db.disconnect();
       return res.json({ status: "success", msg: "Order Delivered!" });
     }
     return res.status(400).json({ err: "Unauthorized access!" });

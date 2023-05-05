@@ -1,8 +1,6 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Orders from "../../../models/orderModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 export const config = {
   api: {
@@ -32,6 +30,7 @@ const orderPayment = async (req, res) => {
       paymentStatus,
       dateOfPayment,
     } = req.body;
+    await db.connect();
     const updateOrder = await Orders.findOneAndUpdate(
       { _id: orderId },
       {
@@ -46,6 +45,8 @@ const orderPayment = async (req, res) => {
         },
       }
     );
+    await Products;
+    await db.disconnect();
     return res.json({ status: "success", msg: "Payment Done" });
   } catch (error) {
     return res.status(500).json({ err: error.message });

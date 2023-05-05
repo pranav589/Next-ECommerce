@@ -39,6 +39,9 @@ const cartSchema = new mongoose.Schema(
   }
 );
 
-let Dataset = mongoose.models.cart || mongoose.model("cart", cartSchema);
+let Dataset =
+  mongoose.models && "cart" in mongoose.models
+    ? mongoose.models.cart
+    : mongoose.model("cart", cartSchema);
 
 export default Dataset;

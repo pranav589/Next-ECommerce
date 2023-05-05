@@ -1,7 +1,5 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Cart from "../../../models/cartModel";
-
-connectDB();
 
 export const config = {
   api: {
@@ -21,7 +19,7 @@ export default async (req, res) => {
 const addToCartForGuest = async (req, res) => {
   try {
     const { cartId, products } = req.body;
-
+    await db.connect();
     let cart = await Cart.findOne({ _id: cartId });
     if (cart) {
       if (products?.length > 0) {
@@ -42,12 +40,14 @@ const addToCartForGuest = async (req, res) => {
         cart["products"] = final;
 
         cart = await cart.save();
+        await db.disconnect();
         return res.status(201).json({ status: "success", Data: cart });
       }
     } else {
       const newCart = await Cart.create({
         products: products,
       });
+      await db.disconnect();
       return res.status(201).json({ status: "success", Data: newCart });
     }
   } catch (error) {

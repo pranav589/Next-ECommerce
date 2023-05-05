@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import { apiCall } from "@/utils/apiCall";
 import { useState } from "react";
@@ -13,6 +13,7 @@ import ProductCard from "@/components/ProductCard/ProductsCard";
 import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
 
 const Home = (props) => {
+  const token = typeof window !== "undefined" && localStorage.getItem("token");
   const [bannerProducts, setBannerProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -235,6 +236,7 @@ const Home = (props) => {
                 <Typography>No Products Found!</Typography>
               ) : (
                 products?.map((product) => (
+                  // <>hello</>
                   <ProductCard
                     key={product?._id}
                     product={product}

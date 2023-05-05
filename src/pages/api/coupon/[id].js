@@ -1,8 +1,6 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Coupon from "../../../models/couponModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 export const config = {
   api: {
@@ -29,9 +27,10 @@ const deleteCoupon = async (req, res) => {
   try {
     const result = await auth(req, res);
     const { id } = req.query;
+    await db.connect();
     if (result.role === "admin" || result.root === true) {
       const coupon = await Coupon.findOneAndDelete({ _id: id });
-
+      await db.disconnect();
       return res.json({
         status: "success",
         Data: coupon,

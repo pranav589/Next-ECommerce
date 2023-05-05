@@ -1,8 +1,6 @@
-import connectDB from "@/utils/connectDB";
+import db from "@/utils/connectDB";
 import Cart from "../../../models/cartModel";
 import auth from "@/middleware/auth";
-
-connectDB();
 
 export const config = {
   api: {
@@ -32,7 +30,7 @@ const addToCartForLogged = async (req, res) => {
   try {
     const result = await auth(req, res);
     const products = req.body;
-
+    await db.connect();
     if (result.id) {
       let cart = await Cart.findOne({ userId: result.id });
       if (cart) {
@@ -56,6 +54,7 @@ const addToCartForLogged = async (req, res) => {
           cart["products"] = final;
 
           cart = await cart.save();
+          await db.disconnect();
           return res.status(201).json({ status: "success", Data: cart });
         }
       } else {
@@ -63,6 +62,7 @@ const addToCartForLogged = async (req, res) => {
           userId: result.id,
           products: products,
         });
+        await db.disconnect();
         return res.status(201).json({ status: "success", Data: newCart });
       }
     }

@@ -9,9 +9,18 @@ import { toast } from "react-toastify";
 import useWindowSize from "@/hooks/useWindowSize";
 import { DataContext } from "@/store/GlobalState";
 import { addToCart } from "@/store/Actions";
+import { useState } from "react";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useEffect } from "react";
+import Ratings from "../Ratings/Ratings";
 
-export default function ProductCard({ product = {}, handleClick }) {
+export default function ProductCard({ product, handleClick }) {
   const { width } = useWindowSize();
+  const token = typeof window !== "undefined" && localStorage.getItem("token");
+  const [isWishListed, setIsWishListed] = useState(false);
+  const [ratingsValue, setRatingsValue] = useState(product?.totalRating);
+
   const truncate = (input, length) =>
     input?.length > length ? `${input.substring(0, length)}...` : input;
   const handleCard = (product) => {
@@ -19,7 +28,7 @@ export default function ProductCard({ product = {}, handleClick }) {
   };
 
   const { state, dispatch } = React.useContext(DataContext);
-  const { auth } = state;
+  const { auth, wishlist } = state;
 
   const handleAddToCart = async (e, product, userId, quantity = 1) => {
     e.stopPropagation();
@@ -81,6 +90,48 @@ export default function ProductCard({ product = {}, handleClick }) {
     }
   };
 
+  useEffect(() => {
+    if (wishlist?.length > 0) {
+      const validateProduct = wishlist?.find(
+        (item) => item?.product?._id === product?._id
+      );
+
+      if (validateProduct) {
+        setIsWishListed(true);
+      }
+    }
+  }, [product?._id, wishlist]);
+
+  const handleAddToWishlist = async (e) => {
+    console.log("click");
+    e.stopPropagation();
+    try {
+      const data = {
+        productId: product?._id,
+      };
+      const res = await apiCall("POST", "wishlist/add", token, data);
+      if (res?.data?.status === "success") {
+        setIsWishListed(true);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.err);
+    }
+  };
+
+  const handleRemoveFromWishlist = async (e) => {
+    e.stopPropagation();
+
+    try {
+      const res = await apiCall("DELETE", `wishlist/${product?._id}`, token);
+      if (res?.data?.status === "success") {
+        setIsWishListed(false);
+        toast.success("Item removed from wish-list.");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.err);
+    }
+  };
+
   return (
     <Card
       sx={{
@@ -96,6 +147,7 @@ export default function ProductCard({ product = {}, handleClick }) {
           transform: "scale(1.01)",
         },
         padding: "10px",
+        position: "relative",
       }}
       elevation={0}
       onClick={() => handleCard(product)}
@@ -167,6 +219,14 @@ export default function ProductCard({ product = {}, handleClick }) {
               In Stock : {product?.inStock}
             </Typography>
           </Box>
+          <Box sx={{ margin: "4px 0px" }}>
+            <Ratings
+              readOnly={true}
+              showText={false}
+              value={ratingsValue}
+              setValue={setRatingsValue}
+            />
+          </Box>
         </CardContent>
         <Box
           sx={{
@@ -177,6 +237,7 @@ export default function ProductCard({ product = {}, handleClick }) {
           }}
         >
           <Button
+            fullWidth
             sx={{
               background: "#539165",
               "&:hover": { background: "#539165" },
@@ -187,18 +248,37 @@ export default function ProductCard({ product = {}, handleClick }) {
           >
             Add to cart
           </Button>
-          <Button
-            sx={{
-              background: "#539165",
-              "&:hover": { background: "#539165" },
-              color: "#fff",
-              margin: "3px 0px",
-            }}
-          >
-            Wishlist
-          </Button>
         </Box>
       </CardActionArea>
+      <Box
+        sx={{
+          position: "absolute",
+          top: "12px",
+          right: "12px",
+          background: "rgba(0,0,0,0.5)",
+          color: "#fff",
+          borderRadius: "50%",
+          height: "30px",
+          width: "30px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+        }}
+      >
+        {isWishListed ? (
+          <FavoriteIcon
+            onClick={(e) => handleRemoveFromWishlist(e)}
+            fontSize={"small"}
+            sx={{ color: "crimson" }}
+          />
+        ) : (
+          <FavoriteBorderIcon
+            onClick={(e) => handleAddToWishlist(e)}
+            fontSize={"small"}
+          />
+        )}
+      </Box>
     </Card>
   );
 }

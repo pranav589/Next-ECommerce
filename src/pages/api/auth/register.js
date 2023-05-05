@@ -1,10 +1,8 @@
-import connectDB from "../../../utils/connectDB";
 import Users from "../../../models/userModel";
 import bcrypt from "bcrypt";
 import valid from "../../../utils/valid";
 import CryptoJS from "crypto-js";
-
-connectDB();
+import db from "@/utils/connectDB";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
@@ -34,7 +32,7 @@ const register = async (req, res) => {
       decryptedConfirmPassword
     );
     if (errorMessage) return res.status(400).json({ err: errorMessage });
-
+    await db.connect();
     const user = await Users.findOne({ email });
     if (user)
       return res.status(400).json({ err: "This email already exists." });
@@ -47,6 +45,7 @@ const register = async (req, res) => {
       confirmPassword: confirmPassword,
     });
     await newUser.save();
+    await db.disconnect();
     res.json({ msg: "Register Success!" });
   } catch (error) {
     return res.status(500).json({ err: error.message });

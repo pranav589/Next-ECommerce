@@ -17,6 +17,8 @@ const wishlistSchema = new mongoose.Schema(
 );
 
 let Dataset =
-  mongoose.models.wishlist || mongoose.model("wishlist", wishlistSchema);
+  mongoose.models && "wishlist" in mongoose.models
+    ? mongoose.models.wishlist
+    : mongoose.model("wishlist", wishlistSchema);
 
 export default Dataset;
