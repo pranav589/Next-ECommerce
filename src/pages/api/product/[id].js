@@ -3,6 +3,12 @@ import Categories from "../../../models/categoryModel";
 import auth from "@/middleware/auth";
 import db from "@/utils/connectDB";
 
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
   switch (req.method) {
