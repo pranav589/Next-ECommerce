@@ -75,6 +75,7 @@ const getCart = async (req, res) => {
   try {
     const result = await auth(req, res);
     if (result.id) {
+      await db.connect();
       const cart = await Cart.find({ userId: result.id }).populate({
         path: "products",
         populate: {
@@ -95,7 +96,7 @@ const getCart = async (req, res) => {
             : acc + curr?.productId?.price * curr?.quantity,
         0
       );
-
+      await db.disconnect();
       return res.json({
         status: "success",
         Data: { cart, totalAmount },
@@ -110,10 +111,10 @@ const decreaseQuantity = async (req, res) => {
   try {
     const result = await auth(req, res);
     const products = req.body;
-    console.log({ products });
+    await db.connect();
     if (result.id) {
       let cart = await Cart.findOne({ userId: result.id });
-      console.log({ cart });
+
       if (cart) {
         if (products?.length > 0) {
           cart.products.forEach((obj) => {
@@ -134,9 +135,11 @@ const decreaseQuantity = async (req, res) => {
           let final = [...cart.products, ...unique1];
           cart["products"] = final;
           cart = await cart.save();
+
           return res.status(201).json({ status: "success", Data: cart });
         }
       }
+      await db.disconnect();
     }
   } catch (error) {
     return res.status(500).json({ err: error.message });
@@ -148,6 +151,7 @@ const removeItem = async (req, res) => {
     const result = await auth(req, res);
     const { productId } = req.body;
     if (result.id) {
+      await db.connect();
       let cart = await Cart.findOne({ userId: result.id });
       if (!cart) {
         return res
@@ -172,6 +176,7 @@ const removeItem = async (req, res) => {
           return res.status(201).json({ status: "success", Data: cart });
         }
       }
+      await db.disconnect();
     }
   } catch (error) {
     return res.status(500).json({ err: error.message });
