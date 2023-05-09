@@ -24,6 +24,7 @@ function ProductDetails() {
   const [triggerGetReviewsCall, setTriggerGetReviewsCall] = useState(false);
   const [productDataLoading, setProductDataLoading] = useState(false);
   const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [isProductBuyed, setIsProductBuyed] = useState(false);
 
   const { state, dispatch } = React.useContext(DataContext);
   const { auth, wishlist } = state;
@@ -97,6 +98,12 @@ function ProductDetails() {
           if (res?.data?.status === "success") {
             setProductDetailsData(res?.data?.Data);
             setProductDataLoading(false);
+            const isAlreadyBuyed = res?.data?.Data?.buyers?.find(
+              (id) => id?.userId?.toString() === auth?.user?.id?.toString()
+            );
+            if (isAlreadyBuyed) {
+              setIsProductBuyed(true);
+            }
           }
         } catch (error) {
           toast.error(error?.response?.data?.err);
@@ -215,6 +222,7 @@ function ProductDetails() {
                       maxHeight: "450px",
                       borderRadius: "8px",
                     }}
+                    loading="lazy"
                   />
                   <Box>
                     {productDetailsData?.images?.map((image, index) => (
@@ -231,6 +239,7 @@ function ProductDetails() {
                           border: tab === index ? "2px solid red" : "",
                           borderRadius: "8px",
                         }}
+                        loading="lazy"
                       />
                     ))}
                   </Box>
@@ -362,6 +371,7 @@ function ProductDetails() {
                 setTriggerGetReviewsCall={setTriggerGetReviewsCall}
                 triggerGetReviewsCall={triggerGetReviewsCall}
                 reviewsLoading={reviewsLoading}
+                isProductBuyed={isProductBuyed}
               />
             </BoxShadowWrapper>
           </Box>

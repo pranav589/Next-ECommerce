@@ -71,6 +71,14 @@ const productSchema = new mongoose.Schema(
     totalRating: {
       type: String,
     },
+    buyers: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "users",
+        },
+      },
+    ],
   },
   {
     timestamps: true,

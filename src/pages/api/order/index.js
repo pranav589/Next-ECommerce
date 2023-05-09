@@ -43,8 +43,8 @@ const getOrders = async (req, res) => {
       orders = await Orders.find({ user: result.id })
         .populate("user", "-password")
         .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit);
+        .skip(parseInt(skip))
+        .limit(parseInt(limit));
       totalCount = await Orders.find({ user: result.id }).countDocuments();
     }
     await db.disconnect();
@@ -64,7 +64,7 @@ const createOrder = async (req, res) => {
   try {
     const result = await auth(req, res);
     const { address, cart, total, couponCode, discount } = req.body;
-
+    await db.connect();
     const newOrder = await Orders({
       user: result.id,
       cart,
@@ -75,7 +75,7 @@ const createOrder = async (req, res) => {
     });
 
     await newOrder.save();
-
+    await db.disconnect();
     return res.json({
       status: "success",
       Data: newOrder,
