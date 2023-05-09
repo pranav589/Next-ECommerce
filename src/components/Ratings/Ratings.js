@@ -30,7 +30,6 @@ function Ratings({ readOnly, showText, value, setValue }) {
       <Rating
         name="hover-feedback"
         value={value}
-        precision={0.5}
         getLabelText={getLabelText}
         onChange={(event, newValue) => {
           setValue(newValue);

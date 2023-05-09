@@ -14,6 +14,7 @@ function CustomInputBox({
   readOnly = false,
   type = "text",
   size,
+  placeholder = "",
 }) {
   return (
     <Box sx={{ ...containerStyle }}>
@@ -34,6 +35,7 @@ function CustomInputBox({
         }}
         type={type}
         size={size}
+        placeholder={placeholder}
       />
       {errorValue && (
         <Typography sx={{ color: "red", fontSize: "12px" }}>
