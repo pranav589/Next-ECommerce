@@ -58,11 +58,12 @@ const addAddress = async (req, res) => {
 const getAddress = async (req, res) => {
   try {
     const result = await auth(req, res);
-
+    await db.connect();
     const address = await Address.find({ userId: result.id });
     if (!address) {
       return res.status(400).json({ err: "No address found!" });
     }
+    await db.disconnect();
     return res.json({
       status: "success",
       Data: address,
@@ -75,6 +76,7 @@ const getAddress = async (req, res) => {
 const updateAddress = async (req, res) => {
   try {
     const { name, address1, address2, city, state, phone } = req.body;
+    await db.connect();
     const result = await auth(req, res);
 
     const address = await Address.findOneAndUpdate(
@@ -92,6 +94,7 @@ const updateAddress = async (req, res) => {
     if (!address) {
       return res.status(400).json({ err: "No address found!" });
     }
+    await db.disconnect();
     return res.json({
       status: "success",
       Data: address,

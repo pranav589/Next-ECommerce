@@ -22,6 +22,7 @@ function UserReviews({
   setTriggerGetReviewsCall,
   triggerGetReviewsCall,
   reviewsLoading = false,
+  isProductBuyed = false,
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -115,34 +116,43 @@ function UserReviews({
         User Reviews
       </Typography>
       <Divider />
+      {!isProductBuyed && (
+        <Typography sx={{ fontSize: "18px", marginTop: "10px" }}>
+          Please buy this amazing product and let us know your valuable reviews.
+        </Typography>
+      )}
 
-      <Box sx={{ display: "flex", flexDirection: "column", marginTop: "20px" }}>
-        <Box sx={{ display: "flex" }}>
-          <Typography sx={{ marginRight: "10px" }}>Please rate- </Typography>
-          <Ratings value={ratingsValue} setValue={setRatingsValue} />
+      {isProductBuyed && (
+        <Box
+          sx={{ display: "flex", flexDirection: "column", marginTop: "20px" }}
+        >
+          <Box sx={{ display: "flex" }}>
+            <Typography sx={{ marginRight: "10px" }}>Please rate- </Typography>
+            <Ratings value={ratingsValue} setValue={setRatingsValue} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <CustomInputBox
+              containerStyle={{ width: "100%" }}
+              id={"newCommentValue"}
+              // label={"Codupon Code"}
+              name={"newCommentValue"}
+              inputStyle={{
+                width: { xs: "100%", sm: "100%", md: "100% !important" },
+              }}
+              value={newCommentValue}
+              onChange={(e) => setNewCommentValue(e.target.value)}
+              errorValue={""}
+              placeholder={"Please give your valuable reviews"}
+            />
+            <Button
+              sx={{ fontSize: "16px", marginLeft: "10px" }}
+              onClick={() => handleCreateReview()}
+            >
+              Post
+            </Button>
+          </Box>
         </Box>
-        <Box sx={{ display: "flex" }}>
-          <CustomInputBox
-            containerStyle={{ width: "100%" }}
-            id={"newCommentValue"}
-            // label={"Codupon Code"}
-            name={"newCommentValue"}
-            inputStyle={{
-              width: { xs: "100%", sm: "100%", md: "100% !important" },
-            }}
-            value={newCommentValue}
-            onChange={(e) => setNewCommentValue(e.target.value)}
-            errorValue={""}
-            placeholder={"Please give your valuable reviews"}
-          />
-          <Button
-            sx={{ fontSize: "16px", marginLeft: "10px" }}
-            onClick={() => handleCreateReview()}
-          >
-            Post
-          </Button>
-        </Box>
-      </Box>
+      )}
 
       {reviewsLoading ? (
         <CircularProgress

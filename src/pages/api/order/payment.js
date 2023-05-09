@@ -1,6 +1,7 @@
 import db from "@/utils/connectDB";
 import Orders from "../../../models/orderModel";
 import auth from "@/middleware/auth";
+import Products from "../../../models/productModel";
 
 export const config = {
   api: {
@@ -45,10 +46,38 @@ const orderPayment = async (req, res) => {
         },
       }
     );
-    await Products;
     await db.disconnect();
-    return res.json({ status: "success", msg: "Payment Done" });
+
+    updateOrder.cart.filter((item) => {
+      return sold(
+        item.productId._id,
+        item.quantity,
+        item.productId?.inStock,
+        item.productId?.sold,
+        updateOrder.user
+      );
+    });
+    return res.json({
+      status: "success",
+      msg: "Payment Done",
+    });
   } catch (error) {
     return res.status(500).json({ err: error.message });
   }
+};
+
+const sold = async (id, quantity, oldInStock, oldSold, userId) => {
+  await Products.findOneAndUpdate(
+    { _id: id },
+    {
+      inStock: oldInStock - quantity,
+      sold: quantity + oldSold,
+
+      $push: {
+        buyers: {
+          userId: userId,
+        },
+      },
+    }
+  );
 };
