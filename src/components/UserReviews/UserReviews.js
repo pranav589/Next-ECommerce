@@ -97,6 +97,7 @@ function UserReviews({
       if (res?.data?.status === "success") {
         setTriggerGetReviewsCall(!triggerGetReviewsCall);
         setNewCommentValue("");
+        setRatingsValue(0);
       }
     } catch (error) {
       toast.error(error?.response?.data?.err);
