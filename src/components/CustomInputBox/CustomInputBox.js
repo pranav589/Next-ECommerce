@@ -7,7 +7,7 @@ function CustomInputBox({
   name,
   value,
   onChange,
-  errorValue,
+  errorValue = "",
   inputStyle,
   containerStyle,
   required,
