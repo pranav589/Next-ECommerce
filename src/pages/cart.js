@@ -92,7 +92,6 @@ function Cart() {
 
   const handleCouponCodeApply = async (e) => {
     e.preventDefault();
-    console.log("hi");
     setIsCouponLoading(true);
     try {
       const data = {

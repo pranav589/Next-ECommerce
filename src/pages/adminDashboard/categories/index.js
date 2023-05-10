@@ -38,7 +38,6 @@ function Categories() {
           `category?page=${page}&limit=${productLimit}`
         );
         if (res?.data?.status === "success") {
-          console.log({ res });
           setCategories(res?.data?.Data?.categories);
           setTotalCount(res?.data?.Data?.totalCount);
         }

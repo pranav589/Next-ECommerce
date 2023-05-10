@@ -49,7 +49,6 @@ function CreateProduct() {
         try {
           const res = await apiCall("GET", `product/${id}`);
           if (res?.data?.status === "success") {
-            console.log({ res });
             const {
               title,
               inStock,
@@ -183,14 +182,12 @@ function CreateProduct() {
         const imageOldURL = images?.filter((img) => img?.url);
 
         if (imageNewURL?.length > 0) media = await imageUpload(imageNewURL);
-        console.log({ media, imageNewURL, imageOldURL, images });
         if (media?.length > 0 || images?.length > 0) {
           if (id) {
             const res = await apiCall("PATCH", `product/${id}`, token, {
               ...data,
               images: [...imageOldURL, ...media],
             });
-            console.log({ res });
             if (res?.data?.status === "success") {
               toast.success("Product updated!");
               setProductData(initialData);

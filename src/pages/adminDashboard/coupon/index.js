@@ -41,7 +41,6 @@ function Coupon() {
           token
         );
         if (res?.data?.status === "success") {
-          console.log({ res });
           setCoupons(res?.data?.Data?.coupons);
           setTotalCount(res?.data?.Data?.totalCount);
         }
@@ -115,14 +114,12 @@ function Coupon() {
   };
 
   const handleEdit = (coupon) => {
-    console.log({ coupon });
     setSelectedCoupon(coupon);
     setIsEdit(true);
     setName(coupon?.name);
     setDiscountValue(coupon?.discount);
     setExpiryDate(new Date(coupon?.expiry));
   };
-  console.log({ expiryDate });
 
   return (
     <Wrapper>
