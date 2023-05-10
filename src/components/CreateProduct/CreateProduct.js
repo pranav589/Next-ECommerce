@@ -274,7 +274,6 @@ function CreateProduct() {
                   width: { xs: "100%", sm: "100%", md: "100%" },
                 }}
                 required={true}
-                errorValue={error?.title}
               />
               <CustomInputBox
                 type={"number"}
@@ -289,7 +288,6 @@ function CreateProduct() {
                   width: { xs: "100%", sm: "100%", md: "100%" },
                 }}
                 required={true}
-                errorValue={error?.price}
               />
               <CustomInputBox
                 id={"description"}
@@ -307,7 +305,6 @@ function CreateProduct() {
                   width: { xs: "100%", sm: "100%", md: "100%" },
                 }}
                 required={true}
-                errorValue={error?.description}
               />
               <Box sx={{ marginBottom: "10px", marginTop: "10px" }}>
                 <input
@@ -352,7 +349,6 @@ function CreateProduct() {
                 }}
                 required={true}
                 type="number"
-                errorValue={error?.inStock}
               />
               <CustomInputBox
                 type="number"
@@ -370,7 +366,6 @@ function CreateProduct() {
                 inputStyle={{
                   width: { xs: "100%", sm: "100%", md: "100%" },
                 }}
-                errorValue={errorValue?.discount}
               />
               <FormControlLabel
                 control={
