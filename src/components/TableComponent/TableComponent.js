@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 import React from "react";
 import shortid from "shortid";
 
@@ -105,11 +106,20 @@ function TableComponent({
                   align={align}
                 >
                   {isImage ? (
-                    <img
-                      src={item?.firstCol}
-                      alt={item?.title}
-                      style={imageStyle}
-                    />
+                    <Box
+                      sx={{
+                        width: "75px",
+                        height: "75px",
+                        position: "relative",
+                      }}
+                    >
+                      <Image
+                        fill
+                        src={item?.firstCol}
+                        alt={item?.title}
+                        style={imageStyle}
+                      />
+                    </Box>
                   ) : (
                     item?.firstCol
                   )}

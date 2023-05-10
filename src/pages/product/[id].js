@@ -13,6 +13,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import UserReviews from "@/components/UserReviews/UserReviews";
 import BoxShadowWrapper from "@/components/BoxShadowWrapper";
+import Image from "next/image";
 
 function ProductDetails() {
   const token = typeof window !== "undefined" && localStorage.getItem("token");
@@ -49,7 +50,7 @@ function ProductDetails() {
       }
       const res = await apiCall("POST", `cart/${auth?.user?.id}`, token, data);
       if (res?.data?.status === "success") {
-        toast.success("success");
+        toast.success("Item added to the cart");
         // return dispatch(addToCart(res?.data?.Data?.products, state.cart));
         const getCart = await apiCall("GET", `cart/${auth?.user?.id}`, token);
         const totalQuantity = getCart?.data?.Data?.cart?.[0]?.products?.reduce(
@@ -74,7 +75,7 @@ function ProductDetails() {
       const res = await apiCall("POST", `cart`, "", data);
 
       if (res?.data?.status === "success") {
-        toast.success("success");
+        toast.success("Item added to the cart");
         localStorage.setItem("cartId", res?.data?.Data?._id);
         if (cartId !== null) {
           const getCart = await apiCall("GET", `cart/guest/${cartId}`);
@@ -213,33 +214,46 @@ function ProductDetails() {
             <Grid container>
               <Grid item xs={12} sm={12} md={7}>
                 <Box>
-                  <img
-                    src={productDetailsData?.images?.[tab]?.url}
-                    alt={productDetailsData?.images?.[tab]?.url}
-                    style={{
-                      width: "100%",
-                      maxWidth: "500px",
-                      maxHeight: "450px",
-                      borderRadius: "8px",
+                  <Box
+                    sx={{
+                      position: "relative",
+                      width: {
+                        xs: "100%",
+                        sm: "100%",
+                        md: "500px",
+                      },
+                      height: "450px",
+                      overflow: "hidden",
                     }}
-                    loading="lazy"
-                  />
+                  >
+                    <Image
+                      fill
+                      src={productDetailsData?.images?.[tab]?.url}
+                      alt={productDetailsData?.images?.[tab]?.url}
+                      style={{
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                      }}
+                      loading="lazy"
+                    />
+                  </Box>
+
                   <Box>
                     {productDetailsData?.images?.map((image, index) => (
-                      <img
+                      <Image
+                        width={80}
+                        height={80}
                         src={image?.url}
                         key={index}
                         alt={image?.url}
                         onClick={() => setTab(index)}
                         style={{
-                          width: 80,
-                          height: 80,
                           margin: "5px",
                           objectFit: "cover",
                           border: tab === index ? "2px solid red" : "",
                           borderRadius: "8px",
+                          cursor: "pointer",
                         }}
-                        loading="lazy"
                       />
                     ))}
                   </Box>

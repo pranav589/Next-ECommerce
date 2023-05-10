@@ -10,7 +10,7 @@ import Wrapper from "@/components/Wrapper/Wrapper";
 import CustomTabs from "@/components/CustomTabs/CustomTabs";
 import LineChartComponent from "@/components/LineChart/LineChart";
 
-const AdminCommerceDetailsBox = ({ title, value, link, image }) => {
+const AdminCommerceDetailsBox = ({ title, value }) => {
   const { width } = useWindowSize();
   return (
     <Grid item xs={6} sm={4} md={2.3}>
@@ -28,41 +28,15 @@ const AdminCommerceDetailsBox = ({ title, value, link, image }) => {
           <Typography sx={{ fontSize: "17px", fontWeight: 500 }}>
             {title}
           </Typography>
-
-          <Typography
-            sx={{
-              fontSize: "14px",
-              textDecoration: "underline",
-              marginTop: "3px",
-              color: "blue",
-            }}
-          >
-            {link}
-          </Typography>
         </Box>
-        {width > 767 && (
-          <Paper sx={{ width: "85px", padding: "2px" }}>
-            <img
-              src={image}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                borderRadius: "8px",
-              }}
-              alt={title}
-            />
-          </Paper>
-        )}
       </BoxShadowWrapper>
     </Grid>
   );
 };
 
 function AdminDashboard() {
-  const [loading, setLoading] = useState(false);
   const { state, dispatch } = useContext(DataContext);
-  const router = useRouter();
+
   const { auth } = state;
   const token = typeof window !== "undefined" && localStorage.getItem("token");
   const [dashboardData, setDashboardData] = useState([]);

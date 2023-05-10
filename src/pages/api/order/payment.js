@@ -2,6 +2,7 @@ import db from "@/utils/connectDB";
 import Orders from "../../../models/orderModel";
 import auth from "@/middleware/auth";
 import Products from "../../../models/productModel";
+import Cart from "../../../models/cartModel";
 
 export const config = {
   api: {
@@ -57,6 +58,9 @@ const orderPayment = async (req, res) => {
         updateOrder.user
       );
     });
+
+    const removeFromCart = await Cart.findOneAndDelete({ userId: result.id });
+
     return res.json({
       status: "success",
       msg: "Payment Done",

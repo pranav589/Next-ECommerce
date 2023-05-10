@@ -1,4 +1,5 @@
-import { Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -31,11 +32,21 @@ function HomeCategoryCard({ category }) {
         })
       }
     >
-      <img
-        src={category?.image?.[0]?.url}
-        style={{ width: "100%", height: "100%" }}
-        alt={category?.name}
-      />
+      <Box
+        sx={{
+          width: { xs: "170px", sm: "170px", md: "250px" },
+          height: { xs: "150px", sm: "150px", md: "200px" },
+          position: "relative",
+        }}
+      >
+        <Image
+          fill
+          src={category?.image?.[0]?.url}
+          // style={{ width: "100%", height: "100%" }}
+          alt={category?.name}
+        />
+      </Box>
+
       <Typography
         sx={{
           fontSize: "22px",

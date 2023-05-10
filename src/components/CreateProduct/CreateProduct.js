@@ -20,6 +20,7 @@ import Wrapper from "../Wrapper/Wrapper";
 import BoxShadowWrapper from "../BoxShadowWrapper";
 import CustomInputBox from "../CustomInputBox/CustomInputBox";
 import Dropdown from "../Dropdown/Dropdown";
+import Image from "next/image";
 
 function CreateProduct() {
   const router = useRouter();
@@ -194,7 +195,7 @@ function CreateProduct() {
               setProductData(initialData);
               setImages([]);
               setSelectedCategory(null);
-              // router.push("/adminDashboard/products");
+              router.push("/adminDashboard/products");
             }
           } else {
             const res = await apiCall("POST", "product", token, {
@@ -451,11 +452,10 @@ function CreateProduct() {
                     }}
                     key={shortid.generate()}
                   >
-                    <img
+                    <Image
+                      fill
                       src={img.url ? img.url : URL.createObjectURL(img)}
                       style={{
-                        width: "100%",
-                        height: "100%",
                         cursor: "pointer",
                       }}
                       onClick={() => setSelectedImg(img)}
@@ -488,15 +488,23 @@ function CreateProduct() {
                   <Typography sx={{ fontSize: "18px" }}>
                     Selected Image
                   </Typography>
-                  <img
-                    src={
-                      selectedImg?.url
-                        ? selectedImg?.url
-                        : URL.createObjectURL(selectedImg)
-                    }
-                    style={{ width: "100%", height: "285px" }}
-                    alt={"Preview Image"}
-                  />
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "285px",
+                      position: "relative",
+                    }}
+                  >
+                    <Image
+                      fill
+                      src={
+                        selectedImg?.url
+                          ? selectedImg?.url
+                          : URL.createObjectURL(selectedImg)
+                      }
+                      alt={"Preview Image"}
+                    />
+                  </Box>
                 </Paper>
               )}
             </BoxShadowWrapper>

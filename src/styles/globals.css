@@ -110,6 +110,9 @@ a {
 .Calendar {
   min-height: 31.6vh;
 }
+.heroBannerImg {
+  border-radius: 50%;
+}
 
 @media (max-width: 700px) {
   .carousel .slider {
@@ -118,6 +121,13 @@ a {
     height: 100%;
   }
 }
+
+@media (max-width: 1100px) {
+  .heroBannerImg {
+    border-radius: 0px;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

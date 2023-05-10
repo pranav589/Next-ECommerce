@@ -15,7 +15,7 @@ const nextConfig = {
     //CLOUD_API: YOUR CLOUDINARY API NAME,
   },
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ["res.cloudinary.com", "img.freepik.com"],
   },
   eslint: {
     ignoreDuringBuilds: true,

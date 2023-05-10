@@ -12,6 +12,8 @@ import CartProduct from "@/components/CartProduct";
 import CouponCode from "@/components/CouponCode/CouponCode";
 import CartSummary from "@/components/CartSummary";
 import CustomModal from "@/components/Modal/CustomModal";
+import BoxShadowWrapper from "@/components/BoxShadowWrapper";
+import Image from "next/image";
 
 function Cart() {
   const [couponCode, setCouponCode] = useState("");
@@ -36,20 +38,26 @@ function Cart() {
   useEffect(() => {
     if (token && auth?.isVerified) {
       const fetchCart = async () => {
-        const res = await apiCall("GET", `cart/${auth?.user?.id}`, token);
-        if (res?.data?.status === "success") {
-          console.log({ res1: res });
-          setCartData(res?.data?.Data?.cart?.[0]?.products);
-          setDiscount(res?.data?.Data?.cart?.[0]?.discount);
-          setCouponCode(res?.data?.Data?.cart?.[0]?.couponCode);
-          res?.data?.Data?.cart?.[0]?.couponCode?.length > 0 &&
-            setIsCouponApplied(true);
-          setTotal(res?.data?.Data?.totalAmount);
-          const totalQuantity = res?.data?.Data?.cart?.[0]?.products?.reduce(
-            (acc, curr) => acc + curr?.quantity,
-            0
-          );
-          return dispatch(addToCart("", "", totalQuantity, total));
+        try {
+          setLoading(true);
+          const res = await apiCall("GET", `cart/${auth?.user?.id}`, token);
+          if (res?.data?.status === "success") {
+            setLoading(false);
+            setCartData(res?.data?.Data?.cart?.[0]?.products);
+            setDiscount(res?.data?.Data?.cart?.[0]?.discount);
+            setCouponCode(res?.data?.Data?.cart?.[0]?.couponCode);
+            res?.data?.Data?.cart?.[0]?.couponCode?.length > 0 &&
+              setIsCouponApplied(true);
+            setTotal(res?.data?.Data?.totalAmount);
+            const totalQuantity = res?.data?.Data?.cart?.[0]?.products?.reduce(
+              (acc, curr) => acc + curr?.quantity,
+              0
+            );
+            return dispatch(addToCart("", "", totalQuantity, total));
+          }
+        } catch (error) {
+          setLoading(false);
+          toast.error(error?.response?.data?.err);
         }
       };
       fetchCart();
@@ -60,14 +68,21 @@ function Cart() {
   useEffect(() => {
     if (!token && cartId !== null) {
       const fetchGuestCart = async () => {
-        const res = await apiCall("GET", `cart/guest/${cartId}`);
-        if (res?.data?.status === "success") {
-          setCartData(res?.data?.Data?.[0]?.products);
-          const totalQuantity = res?.data?.Data?.[0]?.products?.reduce(
-            (acc, curr) => acc + curr?.quantity,
-            0
-          );
-          return dispatch(addToCart("", "", totalQuantity));
+        try {
+          setLoading(true);
+          const res = await apiCall("GET", `cart/guest/${cartId}`);
+          if (res?.data?.status === "success") {
+            setLoading(false);
+            setCartData(res?.data?.Data?.[0]?.products);
+            const totalQuantity = res?.data?.Data?.[0]?.products?.reduce(
+              (acc, curr) => acc + curr?.quantity,
+              0
+            );
+            return dispatch(addToCart("", "", totalQuantity));
+          }
+        } catch (error) {
+          setLoading(false);
+          toast.error(error?.response?.data?.err);
         }
       };
       fetchGuestCart();
@@ -103,7 +118,6 @@ function Cart() {
 
   const handleCouponCodeRemove = async (e) => {
     e.preventDefault();
-    console.log("remove");
     setIsCouponLoading(true);
     try {
       const data = {
@@ -126,8 +140,31 @@ function Cart() {
     }
   };
 
-  if (cartData?.length === 0 || (cartData === undefined && loading === false)) {
-    return <Typography>No Products Found!</Typography>;
+  if (
+    (loading === false && cartData?.length === 0) ||
+    (cartData === undefined && loading === false)
+  ) {
+    return (
+      <Box
+        sx={{
+          width: "500px",
+          height: "500px",
+          position: "relative",
+          objectFit: "cover",
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginTop: "20px",
+        }}
+      >
+        <Image
+          fill
+          src={
+            "https://img.freepik.com/free-vector/man-shopping-supermarket_74855-7612.jpg?w=740&t=st=1683710867~exp=1683711467~hmac=ba1da3cb515ba2d86fc42ff3020091d74aad5a1dadf064d11e62c635f002e047"
+          }
+          alt="Empty Cart"
+        />
+      </Box>
+    );
   }
 
   return (
@@ -145,68 +182,61 @@ function Cart() {
         >
           Shopping Cart
         </Typography>
-        <Grid container sx={{ marginTop: "30px" }} columnSpacing={12}>
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={8}
-            // marginRight={{
-            //   xs: 0,
-            //   sm: 3,
-            // }}
-
-            marginBottom={5}
-          >
-            <Typography variant="h5">Cart Items</Typography>
-            <hr />
-            {loading === true ? (
-              <CircularProgress
-                sx={{
-                  color: "#539165",
-                  marginLeft: "50%",
-                  mt: 3,
-                  mb: 2,
-                }}
-              />
-            ) : (
-              cartData?.map((product) => (
-                <CartProduct
-                  key={shortid.generate()}
-                  product={product}
-                  // setLoading={setLoading}
-                  setProducts={setProducts}
-                  setCartData={setCartData}
-                  setTriggerLoginCart={setTriggerLoginCart}
-                  triggerLoginCart={triggerLoginCart}
-                  triggerGuestCart={triggerGuestCart}
-                  setTriggerGuestCart={setTriggerGuestCart}
+        <Grid container columnSpacing={12}>
+          <Grid item xs={12} sm={12} md={8} marginBottom={5}>
+            <BoxShadowWrapper style={{ marginTop: "0px" }}>
+              <Typography variant="h5">Cart Items</Typography>
+              <hr />
+              {loading === true ? (
+                <CircularProgress
+                  sx={{
+                    color: "#539165",
+                    marginLeft: "50%",
+                    mt: 3,
+                    mb: 2,
+                  }}
                 />
-              ))
-            )}
+              ) : (
+                cartData?.map((product) => (
+                  <CartProduct
+                    key={shortid.generate()}
+                    product={product}
+                    // setLoading={setLoading}
+                    setProducts={setProducts}
+                    setCartData={setCartData}
+                    setTriggerLoginCart={setTriggerLoginCart}
+                    triggerLoginCart={triggerLoginCart}
+                    triggerGuestCart={triggerGuestCart}
+                    setTriggerGuestCart={setTriggerGuestCart}
+                  />
+                ))
+              )}
+            </BoxShadowWrapper>
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
-            <Typography variant="h5">Summary</Typography>
-            <hr />
-            <Box sx={{ width: "100% !important" }}>
-              {auth?.isVerified && (
-                <CouponCode
-                  couponCode={couponCode}
-                  setCouponCode={setCouponCode}
-                  isCouponApplied={isCouponApplied}
-                  setIsCouponApplied={setIsCouponApplied}
-                  handleCouponCodeApply={handleCouponCodeApply}
-                  handleCouponCodeRemove={handleCouponCodeRemove}
-                  isCouponLoading={isCouponLoading}
-                />
-              )}
-            </Box>
+            <BoxShadowWrapper>
+              <Typography variant="h5">Summary</Typography>
+              <hr />
+              <Box sx={{ width: "100% !important" }}>
+                {auth?.isVerified && (
+                  <CouponCode
+                    couponCode={couponCode}
+                    setCouponCode={setCouponCode}
+                    isCouponApplied={isCouponApplied}
+                    setIsCouponApplied={setIsCouponApplied}
+                    handleCouponCodeApply={handleCouponCodeApply}
+                    handleCouponCodeRemove={handleCouponCodeRemove}
+                    isCouponLoading={isCouponLoading}
+                  />
+                )}
+              </Box>
 
-            <CartSummary
-              totalAmount={total}
-              discount={discount}
-              setDiscount={setDiscount}
-            />
+              <CartSummary
+                totalAmount={total}
+                discount={discount}
+                setDiscount={setDiscount}
+              />
+            </BoxShadowWrapper>
           </Grid>
         </Grid>
         {showConfetti === true ? (
