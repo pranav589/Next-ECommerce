@@ -49,7 +49,6 @@ function CreateProduct() {
         try {
           const res = await apiCall("GET", `product/${id}`);
           if (res?.data?.status === "success") {
-            console.log({ res });
             const {
               title,
               inStock,
@@ -133,7 +132,7 @@ function CreateProduct() {
       valid = false;
     }
     if (productData?.title?.length < 5) {
-      errors["title"] = "Title should be atleast 3 letters long";
+      errors["title"] = "Title should be atleast 5 letters long";
       valid = false;
     }
 
@@ -189,7 +188,6 @@ function CreateProduct() {
               ...data,
               images: [...imageOldURL, ...media],
             });
-            console.log({ res });
             if (res?.data?.status === "success") {
               toast.success("Product updated!");
               setProductData(initialData);

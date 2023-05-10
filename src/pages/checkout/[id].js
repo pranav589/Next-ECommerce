@@ -123,7 +123,6 @@ function Checkout() {
           setLoading(false);
         } else {
           const res = await apiCall("POST", "address", token, data);
-          console.log({ res });
           if (res?.data?.status === "success") {
             toast.success("Address added successfully!");
           }
@@ -138,7 +137,6 @@ function Checkout() {
         };
 
         const createOrderRes = await apiCall("POST", "order", token, orderData);
-        console.log({ createOrderRes });
         if (createOrderRes?.data?.status === "success") {
           router.push(`/order/${createOrderRes?.data?.Data?._id}`);
         }
@@ -160,7 +158,6 @@ function Checkout() {
       const fetchCart = async () => {
         const res = await apiCall("GET", `cart/${auth?.user?.id}`, token);
         if (res?.data?.status === "success") {
-          console.log({ res });
           setCouponCode(res?.data?.Data?.cart?.[0]?.couponCode);
           setDiscount(res?.data?.Data?.cart?.[0]?.discount);
           setTotal(res?.data?.Data?.totalAmount);

@@ -83,14 +83,12 @@ function DetailOrder() {
       );
     }
   };
-  console.log({ state });
 
   useEffect(() => {
     const fetchOrder = async () => {
       setIsLoading(true);
       if (router?.query?.id) {
         const res = await apiCall("GET", `order/${router?.query?.id}`, token);
-        console.log(res);
         if (res?.data?.status === "success") {
           const formatedData = res?.data?.Data?.cart?.map((order) => {
             return {

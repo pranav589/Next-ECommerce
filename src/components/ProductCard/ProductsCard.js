@@ -103,7 +103,6 @@ export default function ProductCard({ product, handleClick }) {
   }, [product?._id, wishlist]);
 
   const handleAddToWishlist = async (e) => {
-    console.log("click");
     e.stopPropagation();
     try {
       const data = {
