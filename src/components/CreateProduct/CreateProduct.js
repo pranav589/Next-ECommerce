@@ -133,7 +133,7 @@ function CreateProduct() {
       valid = false;
     }
     if (productData?.title?.length < 5) {
-      errors["title"] = "Title should be atleast 3 letters long";
+      errors["title"] = "Title should be atleast 5 letters long";
       valid = false;
     }
 
@@ -183,6 +183,7 @@ function CreateProduct() {
         const imageOldURL = images?.filter((img) => img?.url);
 
         if (imageNewURL?.length > 0) media = await imageUpload(imageNewURL);
+        console.log({ media, imageNewURL, imageOldURL, images });
         if (media?.length > 0 || images?.length > 0) {
           if (id) {
             const res = await apiCall("PATCH", `product/${id}`, token, {
