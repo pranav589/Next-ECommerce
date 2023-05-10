@@ -6,6 +6,7 @@ import { apiCall } from "@/utils/apiCall";
 import useWindowSize from "@/hooks/useWindowSize";
 import { DataContext } from "@/store/GlobalState";
 import IncrementDecrementCounter from "../IncrementDecrementCounter/IncrementDecrementCounter";
+import Image from "next/image";
 
 function CartProduct({
   product,
@@ -15,7 +16,7 @@ function CartProduct({
   triggerGuestCart,
 }) {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isIncDecLoading, setIsIncDecLoading] = useState(false);
   const { state, dispatch } = useContext(DataContext);
   const { cart, auth } = state;
   const token = typeof window !== "undefined" && localStorage.getItem("token");
@@ -68,7 +69,7 @@ function CartProduct({
   };
 
   const handleDecrease = async () => {
-    setIsLoading(true);
+    setIsIncDecLoading(true);
     try {
       if (token && auth?.isVerified) {
         const data = [
@@ -85,7 +86,7 @@ function CartProduct({
           data
         );
         if (res?.data?.status === "success") {
-          toast.success("success");
+          toast.success("Quantity decreased.");
           setTriggerLoginCart(!triggerLoginCart);
         }
       } else {
@@ -106,20 +107,20 @@ function CartProduct({
             data
           );
           if (res?.data?.status === "success") {
-            toast.success("success");
+            toast.success("Quantity decreased.");
             setTriggerGuestCart(!triggerGuestCart);
           }
         }
       }
-      setIsLoading(false);
+      setIsIncDecLoading(false);
     } catch (error) {
       toast.error(error?.response?.data?.err);
-      setIsLoading(false);
+      setIsIncDecLoading(false);
     }
   };
 
   const handleIncrease = async () => {
-    setIsLoading(true);
+    setIsIncDecLoading(true);
     try {
       if (token && auth?.isVerified) {
         const data = [
@@ -138,7 +139,7 @@ function CartProduct({
           data
         );
         if (res?.data?.status === "success") {
-          toast.success("success");
+          toast.success("Quantity increased.");
           setTriggerLoginCart(!triggerLoginCart);
         }
       } else {
@@ -156,15 +157,15 @@ function CartProduct({
         const res = await apiCall("POST", `cart`, "", data);
 
         if (res?.data?.status === "success") {
-          toast.success("success");
+          toast.success("Quantity increased.");
           localStorage.setItem("cartId", res?.data?.Data?._id);
           setTriggerGuestCart(!triggerGuestCart);
         }
       }
-      setIsLoading(false);
+      setIsIncDecLoading(false);
     } catch (error) {
       toast.error(error?.response?.data?.err);
-      setIsLoading(false);
+      setIsIncDecLoading(false);
     }
   };
 
@@ -191,9 +192,11 @@ function CartProduct({
             height: "90px",
             objectFit: "cover",
             marginRight: "25px",
+            position: "relative",
           }}
         >
-          <img
+          <Image
+            fill
             src={product?.productId?.images?.[0]?.url}
             style={{ height: "100%", width: "100%" }}
             alt={product?.productId?.title}
@@ -220,7 +223,7 @@ function CartProduct({
             <Typography
               variant="body1"
               sx={{
-                marginLeft: "15px",
+                marginLeft: product?.productId?.discountPrice ? "15px" : "0px",
                 textDecoration: product?.productId?.discountPrice
                   ? "line-through"
                   : "none",
@@ -247,7 +250,7 @@ function CartProduct({
             handleDecrease={handleDecrease}
             handleIncrease={handleIncrease}
             product={product}
-            isLoading={isLoading}
+            isLoading={isIncDecLoading}
           />
         </Box>
 

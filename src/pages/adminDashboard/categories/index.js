@@ -10,6 +10,7 @@ import BoxShadowWrapper from "@/components/BoxShadowWrapper";
 import CustomInputBox from "@/components/CustomInputBox/CustomInputBox";
 import CategoryCard from "@/components/CategoryCard/CategoryCard";
 import PaginationComponent from "@/components/PaginationComponent/PaginationComponent";
+import Image from "next/image";
 
 function Categories() {
   const [triggerCategoryCall, setTriggerCategoryCall] = useState(false);
@@ -199,21 +200,28 @@ function Categories() {
                 {images && (
                   <Box sx={{ marginTop: "5px" }}>
                     <Typography sx={{ fontSize: "18px" }}>Preview</Typography>
-                    <img
-                      src={
-                        images?.url
-                          ? images?.url
-                          : images
-                          ? URL.createObjectURL(images)
-                          : ""
-                      }
-                      style={{
+                    <Box
+                      sx={{
                         width: "100px",
                         height: "80px",
-                        borderRadius: "8px",
+                        position: "relative",
                       }}
-                      alt={"Preview Image"}
-                    />
+                    >
+                      <Image
+                        fill
+                        src={
+                          images?.url
+                            ? images?.url
+                            : images
+                            ? URL.createObjectURL(images)
+                            : ""
+                        }
+                        style={{
+                          borderRadius: "8px",
+                        }}
+                        alt={"Preview Image"}
+                      />
+                    </Box>
                   </Box>
                 )}
                 {isLoading ? (
