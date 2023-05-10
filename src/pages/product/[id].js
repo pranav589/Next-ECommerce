@@ -14,6 +14,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import UserReviews from "@/components/UserReviews/UserReviews";
 import BoxShadowWrapper from "@/components/BoxShadowWrapper";
 import Image from "next/image";
+import Ratings from "@/components/Ratings/Ratings";
 
 function ProductDetails() {
   const token = typeof window !== "undefined" && localStorage.getItem("token");
@@ -305,12 +306,28 @@ function ProductDetails() {
                     Sold: {productDetailsData?.sold}
                   </Typography>
                 </Box>
-                <Typography
-                  variant="body1"
-                  sx={{ margin: "10px 0px", color: "red" }}
+                <Box
+                  sx={{
+                    margin: "10px 0px",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
                 >
-                  In Stock: {productDetailsData?.inStock}
-                </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "red", marginRight: "20px" }}
+                  >
+                    In Stock: {productDetailsData?.inStock}
+                  </Typography>
+
+                  <Ratings
+                    readOnly={true}
+                    showText={false}
+                    value={productDetailsData?.totalRating}
+                    setValue={() => {}}
+                  />
+                </Box>
+
                 <Typography variant="body1" sx={{ width: "100%" }}>
                   {productDetailsData?.description}
                 </Typography>

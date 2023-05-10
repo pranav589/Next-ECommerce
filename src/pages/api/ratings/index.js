@@ -47,7 +47,7 @@ const createRatings = async (req, res) => {
       const rateProduct = await Product.findByIdAndUpdate(productId, {
         $push: {
           ratings: {
-            star: star,
+            star: Number(star),
             postedBy: result.id,
             comment: comment,
           },
